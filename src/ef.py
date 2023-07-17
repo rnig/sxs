@@ -6,11 +6,15 @@ output_file = open(input('Naar welke file wil je schrijven?'), 'a', encoding="un
 
 start = time.time()
 
+focus_fields = { '<RRNIdentification>' : []
+                 , '<KBONumberIdentification>' : []
+                 , '<ContractTypeName>': [] }
 nested_level = 0
 chunk_counter = 0
 chunk = 1
 data_read = None
 inside_tag = False
+last_tag=None
 inside_closing_tag = False
 inline = ''
 output_line = ''
@@ -33,6 +37,10 @@ while True:
                     end_data_index = output_line.find('</')
                     print(f"{xml_line_counter=}, {output_line=}, , {end_data_index=}, {nested_level=}")
                     if end_data_index > 0:
+                        if last_tag in focus_fields.keys():
+                            focus_fields[last_tag].append(output_line[:end_data_index])
+                            print(f"Validating {last_tag} vs {focus_fields.keys()}.")
+                            print(f"Added {output_line[:end_data_index]}.")
                         inline = '____'*(nested_level+1)+output_line[:end_data_index]+'\n'
                         output_file.write(inline)
                         print(f"{xml_line_counter=}, {inline=}, {nested_level=}")
@@ -59,6 +67,7 @@ while True:
                         output_line = ''
                     else:
                         nested_level += 1
+                        last_tag = output_line
                         output_line += '\n'
                         inline = '____'*nested_level+output_line
                         output_file.write(inline)
@@ -75,4 +84,10 @@ output_file.close()
 stop = time.time()
 delta = stop - start
 print(f"After {delta} seconds we counted {chunk_counter} characters and reformatted {xml_line_counter} lines.")
-
+output_folder = input('To which folder do you want to write the fields focused upon?')
+for key in focus_fields.keys():
+    print(f"Field '{key}' has {len(focus_fields[key])} relations.")
+    key_file = open(output_folder+'/'+key.strip('<>')+'.txt', 'w')
+    for value in list(set(focus_fields[key])):
+        key_file.write(value+'\n')
+        
