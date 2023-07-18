@@ -1,14 +1,16 @@
 import sys
 import time
 
-input_file = open(input('Welke file wil je verwerken?'), encoding="unicode_escape") #utf-8")
-output_file = open(input('Naar welke file wil je schrijven?'), 'a', encoding="unicode_escape") #utf-8")
+input_file = open(input('Welke file wil je verwerken?')) #, encoding="unicode_escape") #utf-8")
+output_file = open(input('Naar welke file wil je schrijven?'), 'a') #, encoding="unicode_escape") #utf-8")
 
 start = time.time()
 
 focus_fields = { '<RRNIdentification>' : []
                  , '<KBONumberIdentification>' : []
                  , '<ContractTypeName>': [] }
+records = []
+last_record = None
 nested_level = 0
 chunk_counter = 0
 chunk = 1
@@ -35,20 +37,26 @@ while True:
                 if inside_closing_tag:
                     inside_closing_tag = False
                     end_data_index = output_line.find('</')
-                    print(f"{xml_line_counter=}, {output_line=}, , {end_data_index=}, {nested_level=}")
+                    #print(f"{xml_line_counter=}, {output_line=}, , {end_data_index=}, {nested_level=}")
                     if end_data_index > 0:
                         if last_tag in focus_fields.keys():
                             focus_fields[last_tag].append(output_line[:end_data_index])
-                            print(f"Validating {last_tag} vs {focus_fields.keys()}.")
-                            print(f"Added {output_line[:end_data_index]}.")
+                            #print(f"Validating {last_tag} vs {focus_fields.keys()}.")
+                            #print(f"Added {output_line[:end_data_index]}.")
+                            if last_tag[-15:] == 'Identification>':
+                                last_record = output_line[:end_data_index]
+                            elif last_tag == '<ContractTypeName>':
+                                last_record += '|'+output_line[:end_data_index]
+                                records.append(last_record)
+                                last_record = ''
                         inline = '____'*(nested_level+1)+output_line[:end_data_index]+'\n'
                         output_file.write(inline)
-                        print(f"{xml_line_counter=}, {inline=}, {nested_level=}")
+                        #print(f"{xml_line_counter=}, {inline=}, {nested_level=}")
                         xml_line_counter += 1
                         output_line=output_line[end_data_index:]
                     inline = '____'*nested_level+output_line+'\n'
                     output_file.write(inline)
-                    print(f"{xml_line_counter=}, {inline=}, {nested_level=}")
+                    #print(f"{xml_line_counter=}, {inline=}, {nested_level=}")
                     xml_line_counter += 1
                     nested_level -= 1
                     output_line=''
@@ -56,13 +64,13 @@ while True:
                     if output_line[1] == '?' and output_line[-2] == '?':
                         output_line += '\n'
                         output_file.write(output_line)
-                        print(f"{xml_line_counter=}, {output_line=}, {nested_level=}")
+                        #print(f"{xml_line_counter=}, {output_line=}, {nested_level=}")
                         xml_line_counter += 1
                         output_line = ''
                     elif xml_line_counter == 1:
                         output_line += '\n'
                         output_file.write(output_line)
-                        print(f"{xml_line_counter=}, {output_line=}, {nested_level=}")
+                        #print(f"{xml_line_counter=}, {output_line=}, {nested_level=}")
                         xml_line_counter += 1
                         output_line = ''
                     else:
@@ -71,7 +79,7 @@ while True:
                         output_line += '\n'
                         inline = '____'*nested_level+output_line
                         output_file.write(inline)
-                        print(f"{xml_line_counter=}, {inline=}, {nested_level=}")
+                        #print(f"{xml_line_counter=}, {inline=}, {nested_level=}")
                         xml_line_counter += 1
                         output_line = ''
             elif data_read == '/' and output_line[-2] == '<':
@@ -90,4 +98,7 @@ for key in focus_fields.keys():
     key_file = open(output_folder+'/'+key.strip('<>')+'.txt', 'w')
     for value in list(set(focus_fields[key])):
         key_file.write(value+'\n')
-        
+print(f"{len(records)}.")
+record_file = open(output_folder+'/records.txt', 'a')
+for record in records:
+    record_file.write(record+'\n')
