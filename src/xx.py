@@ -1,5 +1,10 @@
 import time
 
+#
+# The xx  module is only meant  to "get to know"  something about some
+# interesting tags in the (potentially large) xml file.
+#
+
 input_file = input('Welke file wil je verwerken?')
 f = open(input_file, encoding="unicode_escape") #utf-8")
 
@@ -63,7 +68,7 @@ while True:
             interesting_records[actual_tag].append(actual_data)
         data = ''
         inside_tag = True
-    if 's' == do_sample.lower() and ( interesting_tags_encountered == 50 or tags_read == 5000 ):
+    if 's' == do_sample.lower() and ( interesting_tags_encountered == 3 or tags_read == 5 ):
         break
 f.close()
 if f.closed:
