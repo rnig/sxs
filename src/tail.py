@@ -2,6 +2,22 @@ import os
 import sys
 import time
 
+#
+# De module tail is een imitatie van de unix tail.
+#
+#
+# Bijv:
+#
+# (sxs) d:\sxs>py src\tail.py 5 dat\out\sample-cy.txt dat\out\sample-cy-tail5.txt
+# After 0.025002717971801758  seconds we  counted 1847  characters and
+# the last 5 were written to dat\out\sample-cy-tail5.txt.
+#
+# (sxs) d:\sxs>py src\tail.py 15 dat\out\sample-cy.txt dat\out\sample-cy-tail15.txt
+# After 0.02499675750732422 seconds we counted 1847 characters and the
+# last 15 were written to dat\out\sample-cy-tail15.txt.
+#
+#
+
 start = time.time()
 chunk = int(sys.argv[1])
 ofile = open(sys.argv[3], 'w', encoding="unicode_escape") #"utf-8")
