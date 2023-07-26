@@ -1,7 +1,7 @@
 import sys
 import time
 
-input_file = open(input('Welke file wil je verwerken?')) #, encoding="unicode_escape") #utf-8")
+input_file = open(input('Welke file wil je verwerken?'), encoding="unicode_escape") #utf-8")
 output_file = open(input('Naar welke file wil je schrijven?'), 'a') #, encoding="unicode_escape") #utf-8")
 
 start = time.time()
