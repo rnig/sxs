@@ -1,0 +1,12 @@
+		<CustomerActions>
+			<CloseAction>
+				<Contracts>
+					<Contract RelationSequenceNumber="{{ RelationSequenceNumber }}">
+						<ContractTypeName>
+							<{{ ContractTypeName }}/>
+						</ContractTypeName>
+						<CustomerEndDate>{{ CustomerEndDate }}</CustomerEndDate>
+					</Contract>
+				</Contracts>
+			</CloseAction>
+		</CustomerActions>

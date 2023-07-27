@@ -1,0 +1,11 @@
+tag                        ; value
+DeclarerKBONumber          ; 0403288089
+ReportingDate              ; 2023-08-04
+FileNumber                 ; 1
+FileReference              ; test-1.xml
+CustomerSequenceNumber     ; auto
+CustomerBankIdentification ; wasdeesna
+RRNIdentification          ; some-official-rrn
+RelationSequenceNumber     ; wasdana
+ContractTypeName           ; LeasingContract
+CustomerEndDate            ; 2023-06-06

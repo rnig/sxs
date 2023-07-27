@@ -188,54 +188,49 @@ ____________<Declarer
 
 ## rx : render xml from (template, data)
 
+Gegeven een XML-context onder de vorm  van een Jinja2 template, kan je
+invulwaarden  injecteren  en  uit   het  samengestelde  resultaat  een
+afgevulde XML file afleveren.
+(sxs) d:\sxs>py src\rx.py
+Waar staat de data?ttt\declaration_data.csv
+return_path: cfg\declaration_header.xml
+return_path: cfg\declaration_rrn-header.xml
+return_path: cfg\declaration_close.xml
+return_path: cfg\declaration_rrn-footer.xml
+return_path: cfg\declaration_footer.xml
+Naar welk bestand mag het gegenereerde resultaat worden geschreven?tmp\declaration-coup-de-poing.xml
+
+Een mogelijkse snipper template kan zijn:
+
 '''
-[cmd-prompt]:>python src\rx.py <template> <data> <output>
+<?xml version="1.0" encoding="UTF-8"?>
+<DeclarationRequest xmlns="http://www.nbb.be/cba/2019-04/declaration">
+	<Header>
+		<DeclarerId>
+			<DeclarerKBONumber>{{ DeclarerKBONumber }}</DeclarerKBONumber>
+		</DeclarerId>
+		<ReportingDate>{{ ReportingDate }}</ReportingDate>
+		<FileNumber>{{ FileNumber }}</FileNumber>
+		<FileReference>{{ FileReference }}</FileReference>
+	</Header>
+...
 '''
 
-(sxs) d:\sxs>py src\renderer.py
-Where am i ? d:\sxs
-Waar staat de template?d:\jea\ac-00\cfg\poc-template.yaml
-Where is the template ? d:\jea\ac-00\cfg\poc-template.yaml
-What is the template containing ? titel: thesis
-  ondertitel: quantum foef
-  inleiding:
-    wie is wie:
-      jos en klein peerke
-  axioma:     {{ a }}
-  axioma:     {{ b }}
-  axioma:     {{ c }}
+De invulwaarden zijn dan bijv:
 
-Waar staat de data?d:\jea\ac-00\cfg\data.csv
-Where is the data to be injected ? d:\jea\ac-00\cfg\data.csv
-What data must be injected ? [['label', 'value'], ['a', '1'], ['b', '2'], ['c', '3']]
-Naar welk bestand mag het gegenereerde resultaat worden geschreven?d:\jea\ac-00\tmp\test.yaml
-Whereto do you want to write ? d:\jea\ac-00\tmp\test.yaml
-What do you want to write ? titel: thesis
-  ondertitel: quantum foef
-  inleiding:
-    wie is wie:
-      jos en klein peerke
-  axioma:     1
-  axioma:     2
-  axioma:     3
-
-(sxs) d:\sxs>
-
-
-declaration_header.xml
-declaration_rrn-header.xml
-declaration_close.xml
-declaration_rrn-footer.xml
-declaration_footer.xml
-
-
- declaration_kbo-footer.xml
- declaration_kbo-header.xml
- declaration_kbo.xml
- declaration_rrn.xml
-
-
-
+'''
+tag                        ; value
+DeclarerKBONumber          ; 0403288089
+ReportingDate              ; 2023-08-04
+FileNumber                 ; 1
+FileReference              ; test-1.xml
+CustomerSequenceNumber     ; auto
+CustomerBankIdentification ; wasdeesna
+RRNIdentification          ; official rrn
+RelationSequenceNumber     ; wasdana
+ContractTypeName           ; LeasingContract
+CustomerEndDate            ; 2023-06-06
+'''
 
 
 ## cx :
