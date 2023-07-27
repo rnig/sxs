@@ -1,0 +1,8 @@
+titel: thesis
+  ondertitel: quantum foef
+  inleiding:
+    wie is wie:
+      jos en klein peerke
+  axioma:     {{ a }}
+  axioma:     {{ b }}
+  axioma:     {{ c }}
