@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Extract xmlns="http://www.nbb.be/cba/2021-06/extract">
+<Header>
+<DeclarerId>
+<DeclarerKBONumber>
+0403288089
+</DeclarerKBONumber>
+</DeclarerId>
+<ExtractDate>
+2023-06-05
+</ExtractDate>
+<FileNumber>
+1
+</FileNumber>
+<FileReference>
+0403288089-20230605-20230605-00001523-NoPeriod-00000001.xml
+</FileReference>
+</Header>
+<Customer CustomerSequenceNumber="1">
+<CustomerIdentification>
+<NaturalPersonId>
+<RRNIdentification>
+36013029454
+</RRNIdentification>
+</NaturalPersonId>
+</CustomerIdentification>
+<CustomerRelations>
+<Contracts>
+<Contract>
+<ContractTypeName>
+LifeInsurance
+</ContractTypeName>
+<CustomerStartDate>
+2021-03-25
+</CustomerStartDate>
+<CustomerEndDate>
+9999-12-31
+</CustomerEndDate>
+<Amounts>
+<Amount ValueDate="2021-12-31">
+99845.13
+</Amount>
+<Amount ValueDate="2022-12-31">
+101026.51
+</Amount>
+</Amounts>
+</Contract>
+</Contracts>
+</CustomerRelations>
+</Customer>
+<Customer CustomerSequenceNumber="2">
+<CustomerIdentification>
+<EntityIdentification>
+<KBONumberIdentification>
+0871140370
+</KBONumberIdentification>
+</EntityIdentification>
+</CustomerIdentification>
+<CustomerRelations>
+<Contracts>
+<Contract>
+<ContractTypeName>
+LifeInsurance
+</ContractTypeName>
+<CustomerStartDate>
+2020-01-01
+</CustomerStartDate>
+<CustomerEndDate>
+9999-12-31
+</CustomerEndDate>
+<Amounts>
+<Amount ValueDate="2020-12-31">
+43179.21
+</Amount>
+<Amount ValueDate="2021-12-31">
+49791.44
+</Amount>
+</Amounts>
+</Contract>
+</Contracts>
+</CustomerRelations>
+</Customer>
+<Customer CustomerSequenceNumber="49">
+<CustomerIdentification>
+<EntityIdentification>
+<KBONumberIdentification>
+0446938683
+</KBONumberIdentification>
+</EntityIdentification>
+</CustomerIdentification>
+<CustomerRelations>
+<Contracts>
+<Contract>
+<ContractTypeName>
+MortgageLoan
+</ContractTypeName>
+<CustomerStartDate>
+2022-07-08
+</CustomerStartDate>
+<CustomerEndDate>
+9999-12-31
+</CustomerEndDate>
+</Contract>
+</Contracts>
+</CustomerRelations>
+</Customer>
+</Extract>

@@ -43,24 +43,19 @@ open_tags=[]
 csv_header = []
 records = []
 last_record = []
-#print(f'A:{data_read}, {focus_line=}, {inside_tag=}, {inside_closing_tag=}, {last_tag=}, {nested_level=}, {open_tags=}.')
 while True:
     input_file.seek(chunk_counter)
     data_read = input_file.read(chunk)
     if not data_read:
         break
     else:
-        #print(f"Read '{data_read}' and sticking it to '{focus_line}'.")
         focus_line += data_read
         chunk_counter += 1
     if data_read == '>':
+        print(f'<*>[{data_read=}], {focus_line[-5:]=}, {inside_tag=}, {inside_closing_tag=}, {open_tags=}, {last_tag=}, {nested_level=}, {csv_header=}, {last_record=}, {records=}.')        
         inside_tag = False
-        if len(focus_line) > 0 and focus_line[-2] == '?':
-            #print('Exiting prolog.')
-            pass
-        elif inside_closing_tag:
+        if inside_closing_tag:
             inside_closing_tag = False
-            print(f"{focus_line=}, {nested_level=}, {open_tags=}, {last_tag=}.")
             if len(open_tags) >= nested_level and len(open_tags[nested_level]) > 0:
                 popped_tag = open_tags[nested_level].pop()
                 if len(open_tags[nested_level]) == 0:
@@ -68,48 +63,46 @@ while True:
             if nested_level == 1:
                 records.append(last_record)
                 last_record = []
-                print(f"{records=}.")
+            print('Levelling down.')
             nested_level -= 1
-            print(f"Leveling down, {popped_tag=}, {open_tags=}, {nested_level=}.")
+            print(f'<level-change>[{data_read=}], {focus_line[-5:]=}, {inside_tag=}, {inside_closing_tag=}, {open_tags=}, {last_tag=}, {nested_level=}, {csv_header=}, {last_record=}, {records=}.')
         else:
-            last_tag = focus_line[focus_line.find('<')+1:-1].split()[0]
-            if nested_level == 0:
+            last_tag = focus_line[focus_line.find('<')+1:-1].split()[0].strip('?')
+            if nested_level == -1:
                 open_tags.append( [ last_tag ] )
+            elif nested_level == 0:
+                open_tags[nested_level].append(last_tag)
             else:
-                print(f"{focus_line=}, {nested_level=}, {open_tags=}, {last_tag=}.")
-                if len(open_tags) <= nested_level:
+                if len(open_tags) <= nested_level+1:
                     open_tags.append( [ last_tag ] )
                 else:
-                    print(f'B:{data_read}, {focus_line[-5:]=}, {inside_tag=}, {inside_closing_tag=}, {open_tags=}, {last_tag=}, {nested_level=}.')
+                    print(f'Deze situatie is niet voorzien!\n[{data_read=}], {focus_line[-5:]=}, {inside_tag=}, {inside_closing_tag=}, {open_tags=}, {last_tag=}, {nested_level=}, {csv_header=}, {last_record=}, {records=}.')
                     sys.exit()
             if last_tag not in csv_header:
                 csv_header.append(last_tag)
-                if len(csv_header) > 5:
-                    print(f"{csv_header}, {open_tags=}.")
         focus_line=''
     elif data_read == '<':
         inside_tag = True
-    elif data_read == '?':
-        if len(focus_line) > 0 and focus_line[-2] == '<':
-            #print(f'Entering prolog.')
-            pass
     elif data_read == '/':
         if inside_tag:
-            inside_closing_tag = True
-            #print(f"{csv_header=}, {records=}, {last_record=}, {focus_line=}.")
-    elif data_read == '\n':
-        print(f'Skipping newline after {focus_line[-5:]}.')
+            if len(focus_line) == 2 and focus_line[0] == '<':
+                inside_closing_tag = True
+            else:
+                i = focus_line.find('<')
+                if i > 0 and focus_line.find(data_read) == i+1:
+                    inside_closing_tag = True
     else:
-        if inside_tag and len(focus_line) == 2:
-            #print('Leveling up.')
+        print(f"{focus_line=}.")
+        if inside_tag and len(focus_line) == 2 and focus_line[1] != '?':
+            print('Levelling up.')
             nested_level += 1
-            #print(f"L+:{focus_line=}, {nested_level=}, {open_tags=}, {last_tag=}.")
-        if inside_closing_tag and focus_line[-2] == '/':
-            while len(last_record) <= len(csv_header):
+            print(f'<level-change>[{data_read=}], {focus_line[-5:]=}, {inside_tag=}, {inside_closing_tag=}, {open_tags=}, {last_tag=}, {nested_level=}, {csv_header=}, {last_record=}, {records=}.')
+        if inside_closing_tag and focus_line[-2] == '/' and focus_line[0] != '<':
+            while len(last_record) < len(csv_header):
                 last_record.append('')
-            last_record.insert(csv_header.index(last_tag), focus_line[:focus_line.find('<')])
-            print(f'Append record:{data_read}, {focus_line=}, {inside_tag=}, {inside_closing_tag=}, {open_tags=}, {last_tag=}, {nested_level=}, {csv_header=}, {last_record=}, {records=}.')
-print(f'Z:{data_read}, {focus_line=}, {inside_tag=}, {inside_closing_tag=}, {last_tag=}, {nested_level=}, {open_tags=}.')
+            last_record[csv_header.index(last_tag)] = focus_line[:focus_line.find('<')]
+            print(f"<***>{focus_line[:focus_line.find('<')]} goes into slot {csv_header.index(last_tag)=} so we get record {last_record=}.")
+            print(f'<****>:{data_read}, {focus_line[-5:]=}, {inside_tag=}, {inside_closing_tag=}, {open_tags=}, {last_tag=}, {nested_level=}, {csv_header=}, {last_record=}, {records=}.')
 input_file.close()
 stop = time.time()
 delta = stop - start
