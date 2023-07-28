@@ -52,7 +52,7 @@ while True:
         focus_line += data_read
         chunk_counter += 1
     if data_read == '>':
-        print(f'<*>[{data_read=}], {focus_line[-5:]=}, {inside_tag=}, {inside_closing_tag=}, {open_tags=}, {last_tag=}, {nested_level=}, {csv_header=}, {last_record=}, {records=}.')        
+        #print(f'<*>[{data_read=}], {focus_line[-5:]=}, {inside_tag=}, {inside_closing_tag=}, {open_tags=}, {last_tag=}, {nested_level=}, {csv_header=}, {last_record=}, {records=}.')        
         inside_tag = False
         if inside_closing_tag:
             inside_closing_tag = False
@@ -63,9 +63,9 @@ while True:
             if nested_level == 1:
                 records.append(last_record)
                 last_record = []
-            print('Levelling down.')
+            #print('Levelling down.')
             nested_level -= 1
-            print(f'<level-change>[{data_read=}], {focus_line[-5:]=}, {inside_tag=}, {inside_closing_tag=}, {open_tags=}, {last_tag=}, {nested_level=}, {csv_header=}, {last_record=}, {records=}.')
+            #print(f'<level-change>[{data_read=}], {focus_line[-5:]=}, {inside_tag=}, {inside_closing_tag=}, {open_tags=}, {last_tag=}, {nested_level=}, {csv_header=}, {last_record=}, {records=}.')
         else:
             last_tag = focus_line[focus_line.find('<')+1:-1].split()[0].strip('?')
             if nested_level == -1:
@@ -76,7 +76,7 @@ while True:
                 if len(open_tags) <= nested_level+1:
                     open_tags.append( [ last_tag ] )
                 else:
-                    print(f'Deze situatie is niet voorzien!\n[{data_read=}], {focus_line[-5:]=}, {inside_tag=}, {inside_closing_tag=}, {open_tags=}, {last_tag=}, {nested_level=}, {csv_header=}, {last_record=}, {records=}.')
+                    #print(f'Deze situatie is niet voorzien!\n[{data_read=}], {focus_line[-5:]=}, {inside_tag=}, {inside_closing_tag=}, {open_tags=}, {last_tag=}, {nested_level=}, {csv_header=}, {last_record=}, {records=}.')
                     sys.exit()
             if last_tag not in csv_header:
                 csv_header.append(last_tag)
@@ -92,17 +92,17 @@ while True:
                 if i > 0 and focus_line.find(data_read) == i+1:
                     inside_closing_tag = True
     else:
-        print(f"{focus_line=}.")
+        #print(f"{focus_line=}.")
         if inside_tag and len(focus_line) == 2 and focus_line[1] != '?':
-            print('Levelling up.')
+            #print('Levelling up.')
             nested_level += 1
-            print(f'<level-change>[{data_read=}], {focus_line[-5:]=}, {inside_tag=}, {inside_closing_tag=}, {open_tags=}, {last_tag=}, {nested_level=}, {csv_header=}, {last_record=}, {records=}.')
+            #print(f'<level-change>[{data_read=}], {focus_line[-5:]=}, {inside_tag=}, {inside_closing_tag=}, {open_tags=}, {last_tag=}, {nested_level=}, {csv_header=}, {last_record=}, {records=}.')
         if inside_closing_tag and focus_line[-2] == '/' and focus_line[0] != '<':
             while len(last_record) < len(csv_header):
                 last_record.append('')
             last_record[csv_header.index(last_tag)] = focus_line[:focus_line.find('<')]
-            print(f"<***>{focus_line[:focus_line.find('<')]} goes into slot {csv_header.index(last_tag)=} so we get record {last_record=}.")
-            print(f'<****>:{data_read}, {focus_line[-5:]=}, {inside_tag=}, {inside_closing_tag=}, {open_tags=}, {last_tag=}, {nested_level=}, {csv_header=}, {last_record=}, {records=}.')
+            #print(f"<***>{focus_line[:focus_line.find('<')]} goes into slot {csv_header.index(last_tag)=} so we get record {last_record=}.")
+            #print(f'<****>:{data_read}, {focus_line[-5:]=}, {inside_tag=}, {inside_closing_tag=}, {open_tags=}, {last_tag=}, {nested_level=}, {csv_header=}, {last_record=}, {records=}.')
 input_file.close()
 stop = time.time()
 delta = stop - start
@@ -110,6 +110,21 @@ print(f"After {delta} seconds we counted {chunk_counter} characters and entered 
 output_folder = input('To which folder do you want to write the fields focused upon?')
 record_file = open(output_folder+'/records.csv', 'a')
 record_file.write(';'.join(csv_header)+'\n')
+header_label_count = len(csv_header)
+record_count = 0
+field_count = 0
+last_field_count = -1
 for record in records:
-    print(record)
-    record_file.write(';'.join(record)+'\n')
+    record_count += 1
+    field_count = len(record)
+    if last_field_count > 0 and field_count != last_field_count:
+        print(f"Record length differs from previous\t:{record_count=}, {record=}, {field_count=}, {last_field_count=}.")
+    if field_count != header_label_count:
+        print(f"Record length differs from header\t:{record_count=}, {record=}, {field_count=}, {header_label_count=}.")
+        while len(record) < header_label_count:
+            record.append('')
+    if len(record) == header_label_count:
+        record_file.write(';'.join(record)+'\n')
+    else:
+        print('Incorrect record length.')
+        sys.exit(-1)
