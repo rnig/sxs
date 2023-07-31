@@ -1,6 +1,7 @@
 from jinja2 import Template
 import hy_io
 import hy_is
+import math
 
 MAXIMUM_BATCH_SIZE = 100 # NBB specification is 10000
 
@@ -23,24 +24,29 @@ def process():
     # hy_io.mini_store(buffer, input("Naar welk bestand mag het gegenereerde resultaat worden geschreven?"))
 
 
-def process_data(data_path, batch_size=-1, data_has_header=True):
+def process_data(data_path
+                 , batch_size=-1
+                 , data_has_header=True):
     global MAXIMUM_BATCH_SIZE
     batches = []
-    data_start_index = 0
     if batch_size < 0:
         batch_size = MAXIMUM_BATCH_SIZE
     full_payload = hy_io.load_inventory(data_path)
     header = None
+    data_start_index = 0
     if data_has_header:
         header =full_payload[0]
         data_start_index = 1
     batch_index = 0
-    while batch_index <= (len(full_payload) - data_start_index)//batch_size:
+    data_stop_index = math.ceil((len(full_payload) - data_start_index) / batch_size)
+    print(f"{data_start_index=}, {data_stop_index=}, {batch_index=}.")
+    while batch_index < data_stop_index:
         data = full_payload[batch_index * batch_size:(batch_index + 1) * batch_size]
         if header and batch_index > 0:
             data.insert(0, header)
         batches.append(data)
         batch_index += 1
+        print(f"{batch_index=}.")
     return batches
     
 
