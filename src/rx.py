@@ -1,63 +1,39 @@
-from jinja2 import Template
 import hy_io
 import hy_is
 import math
 
-MAXIMUM_BATCH_SIZE = 100 # NBB specification is 10000
+mode_map = { 'aan' : 'add'
+             , 'af' : 'close' }
 
-
-def process():
-    cfg_path = hy_is.query_path('naar folder met de templates')
-    pieces = [ 'declaration_header.xml'
-               , 'declaration_rrn-header.xml'
-               , 'declaration_close.xml'
-               , 'declaration_rrn-footer.xml'
-               , 'declaration_footer.xml' ]
-    injection_data = hy_io.load_inventory(hy_io.load(hy_io.get_path([ cfg_path, p ], 'WINDOWS')))
-    template_pieces = hy_io.load(hy_io.get_path([ cfg_path, p ], 'WINDOWS'))
-    print(f'{injection_data=}, {template_pieces=}.')
-
-    # buffer = ''
-    # for p in pieces:
-    #     template = Template(''.join())
-    #     buffer += template.render(injection_data)
-    # hy_io.mini_store(buffer, input("Naar welk bestand mag het gegenereerde resultaat worden geschreven?"))
-
-
-def process_data(data_path
-                 , batch_size=-1
-                 , data_has_header=True):
-    global MAXIMUM_BATCH_SIZE
-    batches = []
-    if batch_size < 0:
-        batch_size = MAXIMUM_BATCH_SIZE
-    full_payload = hy_io.load_inventory(data_path)
-    header = None
-    data_start_index = 0
-    if data_has_header:
-        header =full_payload[0]
-        data_start_index = 1
-    batch_index = 0
-    data_stop_index = math.ceil((len(full_payload) - data_start_index) / batch_size)
-    print(f"{data_start_index=}, {data_stop_index=}, {batch_index=}.")
-    while batch_index < data_stop_index:
-        data = full_payload[batch_index * batch_size:(batch_index + 1) * batch_size]
-        if header and batch_index > 0:
-            data.insert(0, header)
-        batches.append(data)
-        batch_index += 1
-        print(f"{batch_index=}.")
-    return batches
+def load_template_map(template_path, template_map='template.map'):
+    puzzle = {}
+    print(f"{template_path=}, {template_map=}.")
+    for mapping in hy_io.load(hy_io.get_path([ template_path, template_map ])):
+        multiplicity, reference = mapping.strip().split(':')
+        print(f"{mapping=}, {multiplicity=}, {reference=}.")
+        reference_template = hy_io.get_path([ template_path, reference ])
+        if '.' == multiplicity:
+            puzzle[reference] = hy_io.load(reference_template)
+        else:
+            puzzle[reference] = [ hy_io.load(reference_template) ]
+    return puzzle
+    
+    
+def generate_declaration():
+    pass
     
 
 
 if __name__ == '__main__':
-    batches = process_data(hy_is.query_path('naar het bestand met de gegevens')
-                           , int(hy_is.ask_input('Hoeveel dossiers per batch?')))
-    out_path = hy_is.query_path('naar het weergave bestand')
-    bc = 0
-    for b in batches:
-        hy_io.mini_store([ ';'.join(l)+'\n' for l in b ], hy_io.get_path([ out_path, 'batch-' + str(bc) + '.csv']))
-        bc += 1
-    
-                         
+    output = []
+    modus = None
+    while modus not in [ 'aan', 'af' ]:
+        modus = hy_is.ask_input("Wil je aanmelden [typ: 'aan'] of afmelden [typ: 'af']?").lower()
+    data_path = hy_is.query_path('naar het bestand met de gegevens')
+    template_puzzle = load_template_map(hy_is.query_path('naar de template folder'))
+    print(f"{template_puzzle=}.")
+    output = generate_declaration()
+    output_folder = hy_is.query_path('naar de weergave folder')
+    output_file = hy_is.ask_input('Hoe wil je het bestand benoemen?')
+    if output:                              
+        hy_io.mini_store(output, hy_io.get_path([ output_folder, output_file ]))

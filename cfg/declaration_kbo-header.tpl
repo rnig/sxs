@@ -1,6 +1,3 @@
-	<Customer CustomerSequenceNumber="7" CustomerBankIdentification="0100000070">
-		<CustomerIdentification>
 			<EntityIdentification>
 				<KBONumberIdentification>{{ KBONumberIdentification }}</KBONumberIdentification>
 			</EntityIdentification>
-		</CustomerIdentification>

@@ -1,0 +1,30 @@
+Mode                       : STATE                :
+DeclarerKBONumber          : DATA_COLUMN          : OWNER
+ReportingDate              : DATE_OF_TODAY
+FileNumber                 : AUTO_INCREMENT       : FILE_NUMBER
+FileReference              : SPECIFICATION        : FILE_NUMBER
+CustomerSequenceNumber     : AUTO_INCREMENT       : CUSTOMER_SEQUENCE_NUMBER
+CustomerBankIdentification : LOOKUP               : CUSTOMER_BANK_IDENTIFICATION
+RRNIdentification          : DATA_COLUMN          : NATIONALNUMBER
+KBONumberIdentification    : DATA_COLUMN          : KBO_NUMBER_IDENTIFICATION
+RelationSequenceNumber     : AUTO_INCREMENT       : RELATION_SEQUENCE_NUMBER
+ActionDate                 : QUERY_USER_ONCE      : ACTION_DATE
+Action                     : LOOKUP               : Mode
+ContractTypeName           : DATA_COLUMN          : CONTRACT_TYPE_NAME
+EntityIdentification       : PATH_REFERENCE       : {template_path}/declaration_{EntityType}_header.tpl
+NIL                        :                      : NAME
+NIL                        :                      : FIRSTNAME
+NIL                        :                      : SECONDFIRSTNAME
+NIL                        :                      : GENDER
+NIL                        :                      : BIRTHDATE
+NIL                        :                      : STREET
+NIL                        :                      : HOUSENUMBER
+NIL                        :                      : APARTMENT
+NIL                        :                      : POSTALCODE
+NIL                        :                      : NISCODE
+NIL                        :                      : PRINCIPALCOUNTRY
+NIL                        :                      : SECONDARYCOUNTRY
+NIL                        :                      : FOREIGNSTREET
+NIL                        :                      : FOREIGNSTREETNUMBER
+NIL                        :                      : FOREIGNPOSTALCODE
+NIL                        :                      : FOREIGNADDRESSTEXT

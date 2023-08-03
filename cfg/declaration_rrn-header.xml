@@ -1,6 +1,0 @@
-	<Customer CustomerSequenceNumber="{{ CustomerSequenceNumber }}" CustomerBankIdentification="{{ CustomerBankIdentification }}">
-		<CustomerIdentification>
-			<NaturalPersonId>
-				<RRNIdentification>{{ RRNIdentification }}</RRNIdentification>
-			</NaturalPersonId>
-		</CustomerIdentification>
