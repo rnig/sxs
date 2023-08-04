@@ -1,5 +1,0 @@
-PlaceHolder                | Literal
-DeclarerKBONumber          | 0403288089       
-ReportingDate              | $TODAY	   
-FileNumber                 | $AUTO_INCREMENT
-FileReference              | $nbb_specification:FileNumber
