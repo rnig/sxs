@@ -8,12 +8,14 @@ import math
 #   Templates are files enlisted in a file called 'template.map'.
 
 # Convention.1:
-mode_map = { 'aan' : 'add'
-             , 'af' : 'close' }
+mode_map = { 'aan' : 'Add'
+             , 'af' : 'Close' }
 
 # Convention.2:
 template_replacing_sequence = [ 'map', 'exn' ] 
 
+# Convention.3:
+state = {}
 
 
 def load_template_data(path, filename, holder_data={}):
@@ -54,8 +56,10 @@ def generate_declaration(template_path, template_map, data, mode):
                         phi = data_header.index(holder_data_row_copy[ph])
                         phv = row.split(';')[phi]
                         holder_data_row_copy[ph] = phv
-                print(holder_data_row_copy)
-                hy_is.confirm_to_continue()
+                #print(holder_data_row_copy)
+                holder_data_row_copy['Action'] = mode_map[mode]
+                holder_data_row_copy['Modus'] = mode_map[mode]+'Action'
+                #hy_is.confirm_to_continue()
                 declaration.append(template_content.safe_substitute(holder_data_row_copy))
     return ''.join(declaration)
     

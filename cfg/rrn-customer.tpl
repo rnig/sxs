@@ -5,7 +5,7 @@
 	</NaturalPersonId>
     </CustomerIdentification>
     <CustomerActions>
-      <$ModeAction>
+      <$Modus>
         <Contracts>
           <Contract RelationSequenceNumber="$RelationSequenceNumber">
             <ContractTypeName>
@@ -14,6 +14,6 @@
 	    <Customer$Action>$Date</Customer$Action>
            </Contract>
          </Contracts>
-       </$modeAction>
+       </$Modus>
      </CustomerActions>
   </Customer>
