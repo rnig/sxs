@@ -2,9 +2,9 @@
 <DeclarationRequest xmlns="http://www.nbb.be/cba/2019-04/declaration">
   <Header>
     <DeclarerId>
-      <DeclarerKBONumber>{{ DeclarerKBONumber }}</DeclarerKBONumber>
+      <DeclarerKBONumber>$DeclarerKBONumber</DeclarerKBONumber>
     </DeclarerId>
-    <ReportingDate>{{ ReportingDate }}</ReportingDate>
-    <FileNumber>{{ FileNumber }}</FileNumber>
-    <FileReference>{{ FileReference }}</FileReference>
+    <ReportingDate>$ReportingDate</ReportingDate>
+    <FileNumber>$FileNumber</FileNumber>
+    <FileReference>$FileReference</FileReference>
   </Header>

@@ -1,17 +1,17 @@
-  <Customer CustomerSequenceNumber="{{ CustomerSequenceNumber }}" CustomerBankIdentification="{{ CustomerBankIdentification }}">
+  <Customer CustomerSequenceNumber="$CustomerSequenceNumber" CustomerBankIdentification="$CustomerBankIdentification">
     <CustomerIdentification>
-      {{ EntityIdentification }}
+      $EntityIdentification
     </CustomerIdentification>
     <CustomerActions>
-      <{{ Mode }}Action>
+      <$ModeAction>
         <Contracts>
-          <Contract RelationSequenceNumber="{{ RelationSequenceNumber }}">
+          <Contract RelationSequenceNumber="$RelationSequenceNumber">
             <ContractTypeName>
-		      <{{ ContractTypeName }}/>
+		      <$ContractTypeName/>
 		    </ContractTypeName>
-		    <Customer{{ Action }}>{{ ActionDate }}</Customer{{ Action }}>
+		    <Customer$Action>$ActionDate</Customer$Action>
            </Contract>
          </Contracts>
-       </{{ mode }}Action>
+       </$Modeaction>
      </CustomerActions>
   </Customer>
