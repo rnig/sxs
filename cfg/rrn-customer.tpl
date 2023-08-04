@@ -1,17 +1,19 @@
   <Customer CustomerSequenceNumber="$CustomerSequenceNumber" CustomerBankIdentification="$CustomerBankIdentification">
     <CustomerIdentification>
-      $EntityIdentification
+	<NaturalPersonId>
+          <RRNIdentification>$RRNIdentification</RRNIdentification>
+	</NaturalPersonId>
     </CustomerIdentification>
     <CustomerActions>
       <$ModeAction>
         <Contracts>
           <Contract RelationSequenceNumber="$RelationSequenceNumber">
             <ContractTypeName>
-		      <$ContractTypeName/>
-		    </ContractTypeName>
-		    <Customer$Action>$ActionDate</Customer$Action>
+	      <$ContractTypeName/>
+	    </ContractTypeName>
+	    <Customer$Action>$Date</Customer$Action>
            </Contract>
          </Contracts>
-       </$Modeaction>
+       </$modeAction>
      </CustomerActions>
   </Customer>

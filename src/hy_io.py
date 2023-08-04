@@ -97,7 +97,6 @@ def get_path(p_path_parts=[ 'tmp', 'test', 'file.txt' ]
     if p_debug:
         print('part_list:', part_list)
     return_path = separator.join([ part.replace('/',separator) for part in part_list ])
-    print('return_path:', return_path)
     return return_path
     
 
@@ -145,7 +144,7 @@ def load(p_file_path='tmp/tmp.txt', p_debug=False):
     if p_debug:
         print('Loading %s.' % p_file_path)
     r_data = []
-    fo = open(p_file_path, 'r', encoding='utf-8')
+    fo = open(p_file_path, 'r', encoding='unicode_escape')
     try:
         r_data = fo.readlines()
     finally:
@@ -214,7 +213,7 @@ def mini_store(p_data=[ 'a', 'b', 'c' ], p_file_path='tmp/tmp.txt', p_append=Fal
     if p_binary:
         print('Writing binary.')
         write_mode += 'b'
-    with open(p_file_path, write_mode, encoding='utf-8') as fo:
+    with open(p_file_path, write_mode , encoding='utf-8') as fo:
         for i in p_data:
             fo.write(i)
         rc = True

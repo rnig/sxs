@@ -1,0 +1,7 @@
+ContractTypeName           | Test-Tak21
+Mode                       | STATE  
+CustomerSequenceNumber     | AUTO_INCREMENT
+CustomerBankIdentification | md5(data.row)
+RelationSequenceNumber     | AUTO_INCREMENT    
+Date                       | QUERY_USER_ONCE
+Action                     | LOOKUP 
