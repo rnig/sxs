@@ -58,8 +58,8 @@ def generate_declaration(template_path, template_map, data):
                 if 'STATE' in holder_data[k]:
                     print(state[holder_data[k].split(':')[1]])
                     holder_data[k] = state[holder_data[k].split(':')[1]]
+            # Convention.4: NBB specification of file name.
             holder_data['FileReference'] = f"{state['DECLARER_KBO']}-INC-UAT-{state['TODAY']}-{state['FILE_NUMBER']}.xml"
-            print(f"Substituting {holder_data=}.") 
             declaration.append(template_content.safe_substitute(holder_data))
         elif 'Data' ==  holder_data['PlaceHolder']:
             data_header = data[0].strip().split(';')
@@ -88,6 +88,6 @@ if __name__ == '__main__':
                                   , hy_is.ask_input('Welke template map wil je gebruiken?')
                                   , hy_io.load(hy_is.query_path('naar het bestand met de gegevens')))
     output_folder = hy_is.query_path('naar de weergave folder')
-    output_file = hy_is.ask_input('Hoe wil je het bestand benoemen?')
+    output_file = f"{state['DECLARER_KBO']}-INC-UAT-{state['TODAY']}-{state['FILE_NUMBER']}.xml"
     if output:                              
         hy_io.mini_store(output, hy_io.get_path([ output_folder, output_file ]))
