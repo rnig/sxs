@@ -2,4 +2,4 @@ PlaceHolder                | Literal
 DeclarerKBONumber          | STATE:DECLARER_KBO
 ReportingDate              | STATE:TODAY	   
 FileNumber                 | STATE-AUTO_INCREMENT:FILE_NUMBER
-FileReference              | STATE:FILE_NUMBER
+FileReference              | FILE_REFERENCE

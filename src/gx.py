@@ -15,11 +15,12 @@ mode_map = { 'aan' : 'Add'
 template_replacing_sequence = [ 'map', 'exn' ] 
 
 # Convention.3:
+from datetime import date
+TODAY = date.today().strftime("%Y%m%d")
 file_number = 1
-state = { 'FILE_REFERENCE' : Template('$DECLARER_KBO-INC-UAT-$TODAY-$FILE_NUMBER.xml')
-          , 'FILE_NUMBER' : "{0:0>3}".format(file_number)
+state = {   'FILE_NUMBER' : "{0:0>3}".format(file_number)
           , 'MODUS' : 'af'
-          , 'TODAY' : '20230804'
+          , 'TODAY' : TODAY # '20230804'
           , 'DECLARER_KBO' : '0403288089'
          }
 
@@ -57,6 +58,8 @@ def generate_declaration(template_path, template_map, data):
                 if 'STATE' in holder_data[k]:
                     print(state[holder_data[k].split(':')[1]])
                     holder_data[k] = state[holder_data[k].split(':')[1]]
+            holder_data['FileReference'] = f"{state['DECLARER_KBO']}-INC-UAT-{state['TODAY']}-{state['FILE_NUMBER']}.xml"
+            print(f"Substituting {holder_data=}.") 
             declaration.append(template_content.safe_substitute(holder_data))
         elif 'Data' ==  holder_data['PlaceHolder']:
             data_header = data[0].strip().split(';')
